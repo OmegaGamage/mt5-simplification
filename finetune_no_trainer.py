@@ -27,12 +27,11 @@ import random
 import datasets
 import numpy as np
 import torch
+import transformers
+from accelerate import Accelerator
 from datasets import load_dataset, load_metric
 from torch.utils.data.dataloader import DataLoader
 from tqdm.auto import tqdm
-
-import transformers
-from accelerate import Accelerator
 from transformers import (
     CONFIG_MAPPING,
     MODEL_MAPPING,
@@ -50,7 +49,6 @@ from transformers import (
 )
 from transformers.utils.versions import require_version
 
-
 logger = logging.getLogger(__name__)
 require_version("datasets>=1.8.0", "To fix: pip install -r examples/pytorch/translation/requirements.txt")
 
@@ -61,7 +59,6 @@ MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
 
 # Parsing input arguments
 def parse_args():
-
     parser = argparse.ArgumentParser(description="Finetune a transformers model on a text classification task")
     parser.add_argument(
         "--dataset_name",
@@ -91,7 +88,7 @@ def parse_args():
         type=int,
         default=None,
         help="Number of beams to use for evaluation. This argument will be "
-        "passed to ``model.generate``, which is used during ``evaluate`` and ``predict``.",
+             "passed to ``model.generate``, which is used during ``evaluate`` and ``predict``.",
     )
 
     parser.add_argument(
@@ -99,32 +96,32 @@ def parse_args():
         type=int,
         default=1024,
         help="The maximum total input sequence length after "
-        "tokenization.Sequences longer than this will be truncated, sequences shorter will be padded.",
+             "tokenization.Sequences longer than this will be truncated, sequences shorter will be padded.",
     )
     parser.add_argument(
         "--max_target_length",
         type=int,
         default=128,
         help="The maximum total sequence length for target text after "
-        "tokenization. Sequences longer than this will be truncated, sequences shorter will be padded."
-        "during ``evaluate`` and ``predict``.",
+             "tokenization. Sequences longer than this will be truncated, sequences shorter will be padded."
+             "during ``evaluate`` and ``predict``.",
     )
     parser.add_argument(
         "--val_max_target_length",
         type=int,
         default=None,
         help="The maximum total sequence length for validation "
-        "target text after tokenization.Sequences longer than this will be truncated, sequences shorter will be "
-        "padded. Will default to `max_target_length`.This argument is also used to override the ``max_length`` "
-        "param of ``model.generate``, which is used during ``evaluate`` and ``predict``.",
+             "target text after tokenization.Sequences longer than this will be truncated, sequences shorter will be "
+             "padded. Will default to `max_target_length`.This argument is also used to override the ``max_length`` "
+             "param of ``model.generate``, which is used during ``evaluate`` and ``predict``.",
     )
     parser.add_argument(
         "--pad_to_max_length",
         type=bool,
         default=False,
         help="Whether to pad all samples to model maximum sentence "
-        "length. If False, will pad the samples dynamically when batching to the maximum length in the batch. More"
-        "efficient on GPU but very bad for TPU.",
+             "length. If False, will pad the samples dynamically when batching to the maximum length in the batch. More"
+             "efficient on GPU but very bad for TPU.",
     )
     parser.add_argument(
         "--validation_file", type=str, default=None, help="A csv or a json file containing the validation data."
@@ -344,7 +341,7 @@ def main():
     # Set decoder_start_token_id
     if model.config.decoder_start_token_id is None and isinstance(tokenizer, (MBartTokenizer, MBartTokenizerFast)):
         assert (
-            args.target_lang is not None and args.source_lang is not None
+                args.target_lang is not None and args.source_lang is not None
         ), "mBart requires --target_lang and --source_lang"
         if isinstance(tokenizer, MBartTokenizer):
             model.config.decoder_start_token_id = tokenizer.lang_code_to_id[args.target_lang]
@@ -560,5 +557,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
