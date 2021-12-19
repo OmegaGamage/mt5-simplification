@@ -83,8 +83,8 @@ if __name__ == '__main__':
 
         input_ids = tokenizer(line, return_tensors="pt").input_ids
         input_ids = input_ids.to(device)
-        output_ids = model.generate(input_ids=input_ids, do_sample=True, temperature=temp, max_length=max_length,
-                                    top_k=topk, top_p=topp, repetition_penalty=rep_pen)
+        output_ids = model.generate(input_ids=input_ids, do_sample=do_sample, temperature=temp, max_length=max_length,
+                                    top_k=topk, top_p=topp, repetition_penalty=rep_pen,num_beams=num_beams)
         out = tokenizer.decode(output_ids[0])
 
         # Remove pad and eos tokens.
