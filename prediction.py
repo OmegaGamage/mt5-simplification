@@ -19,6 +19,8 @@ if __name__ == '__main__':
     parser.add_argument('--topk', type=int, help=f'Top k for random sampling.')
     parser.add_argument('--topp', type=float, help=f'Top p for random sampling.')
     parser.add_argument('--rep_pen', type=float, help=f'Repetition penalty.')
+    parser.add_argument('--num_beams', type=int, help="Number of beams. Default is 1")
+    parser.add_argument('--do_sample', type=bool, help="Whether to use sampling. Default False")
 
     args = parser.parse_args()
 
@@ -67,6 +69,12 @@ if __name__ == '__main__':
 
     rep_pen = args.rep_pen if (args.rep_pen) else 1.0
     logging.info("Repeptition penalty set to %f." % rep_pen)
+
+    num_beams = args.num_beams if args.num_beams else 1
+    logging.info("Number of beams is set to %f." % num_beams)
+
+    do_sample = args.do_sample if args.do_sample else False
+    logging.info("Number of beams is set to %f." % do_sample)
 
     i = 0
     for line in source_sentences[:count]:
