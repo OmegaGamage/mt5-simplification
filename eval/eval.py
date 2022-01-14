@@ -3,7 +3,7 @@ from easse.cli import report
 from easse.sari import corpus_sari, get_corpus_sari_operation_scores
 
 original_file = "complex.txt"
-sys_out = "prediction-model16.txt"
+sys_out = "mbart/model1.txt"
 ref1_file = "simp1.txt"
 ref2_file = "simp2.txt"
 original = open(original_file).readlines()
@@ -11,15 +11,14 @@ syst = open(sys_out).readlines()
 ref1 = open(ref1_file).readlines()
 ref2 = open(ref2_file).readlines()
 
-print("SARI Score using ref: ", corpus_sari(orig_sents=original,
-                                            sys_sents=syst,
-                                            refs_sents=[ref1, ref2]))
-
-print("SARI components: add, keep ,del ", get_corpus_sari_operation_scores(orig_sents=original,
-                                                                           sys_sents=syst,
-                                                                           refs_sents=[ref1, ref2]))
-print("BLEU: ", corpus_bleu(sys_sents=syst, refs_sents=[ref1, ref2]))
-
+sari_val = corpus_sari(orig_sents=original, sys_sents=syst, refs_sents=[ref1, ref2])
+print("SARI:", round(sari_val, 2))
+add, keep, dele = get_corpus_sari_operation_scores(orig_sents=original,
+                                                   sys_sents=syst,
+                                                   refs_sents=[ref1, ref2])
+print("add, del, kept: ", round(add, 2), round(dele, 2), round(keep, 2))
+bleu_val = corpus_bleu(sys_sents=syst, refs_sents=[ref1, ref2])
+print("BLEU: ", round(bleu_val), 2)
 # report(
 #     "custom",
 #     sys_sents_path=sys_out,
