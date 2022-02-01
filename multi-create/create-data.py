@@ -25,6 +25,7 @@ def create_new_dataset(key1_list: List[str], key2_list: List[str], new_key1="lan
     assert len(key1_list) == len(key2_list)
     for i, j in zip(key1_list, key2_list):
         new_dataset["data"].append({new_key1: i, new_key2: j})
+    random.shuffle(new_dataset["data"])
     return new_dataset
 
 
@@ -38,7 +39,7 @@ def do_subsampling(key1_list: List, key2_list: List, limit=7000, randomize=False
         zipped = list(zip(key1_list, key2_list))
         random.shuffle(zipped)
         key1_list, key2_list = zip(*zipped)
-        # todo fix randomize
+        # todo check randomize
     return key1_list[:limit], key2_list[:limit]
 
 
@@ -55,10 +56,11 @@ if __name__ == '__main__':
         d1, d2 = get_data_from_dataset(name, k1, k2)
         # Do subsampling here if required
         d1, d2 = do_subsampling(d1, d2, limit=7000, randomize=True)
+
         new_data_key1.extend(d1)
         new_data_key2.extend(d2)
     print(len(new_data_key1))
 
     # Add task token here if required
     data_dict = create_new_dataset(new_data_key1, new_data_key2, new_key1="lang1", new_key2="lang2")
-    write_dataset_to_file(data_dict, "new/multitask-7000-rand-valid.json")
+    write_dataset_to_file(data_dict, "new/multitask-7000-valid.json")
