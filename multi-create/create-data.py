@@ -1,4 +1,5 @@
 import json
+import random
 from typing import List, Dict
 
 
@@ -32,9 +33,19 @@ def write_dataset_to_file(dataset: Dict, file_name="new_dataset.json"):
     json.dump(dataset, file, ensure_ascii=False, indent=4)
 
 
+def do_subsampling(key1_list: List, key2_list: List, limit=7000, randomize=False):
+    if randomize:
+        zipped = list(zip(key1_list, key2_list))
+        random.shuffle(zipped)
+        key1_list, key2_list = zip(*zipped)
+        # todo fix randomize
+    return key1_list[:limit], key2_list[:limit]
+
+
 if __name__ == '__main__':
-    file_names = ["newsela-si-valid-tt.json"]
-    keys = ["com,sim"]
+    file_names = ["mined-7k-valid-tt.json", "newsela-en-valid-tt.json", "newsela-si-valid-tt.json",
+                  "sita-56k-valid-tt.json"]
+    keys = ["po,pt", "come,sime", "com,sim", "en,si"]
 
     new_data_key1 = []
     new_data_key2 = []
@@ -43,11 +54,11 @@ if __name__ == '__main__':
         k2 = keys.split(",")[1].strip()
         d1, d2 = get_data_from_dataset(name, k1, k2)
         # Do subsampling here if required
-
+        d1, d2 = do_subsampling(d1, d2, limit=7000, randomize=True)
         new_data_key1.extend(d1)
         new_data_key2.extend(d2)
     print(len(new_data_key1))
 
     # Add task token here if required
     data_dict = create_new_dataset(new_data_key1, new_data_key2, new_key1="lang1", new_key2="lang2")
-    write_dataset_to_file(data_dict, "multitask-data.json")
+    write_dataset_to_file(data_dict, "new/multitask-7000-rand-valid.json")
