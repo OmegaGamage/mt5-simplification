@@ -346,7 +346,7 @@ def main():
         use_auth_token=True if model_args.use_auth_token else None,
     )
 
-    model.resize_token_embeddings(len(tokenizer))
+# moved the resizing token embeddings to down
 
     # Set decoder_start_token_id
     if model.config.decoder_start_token_id is None and isinstance(tokenizer, (MBartTokenizer, MBartTokenizerFast)):
@@ -359,6 +359,12 @@ def main():
         raise ValueError("Make sure that `config.decoder_start_token_id` is correctly defined")
 
     prefix = data_args.source_prefix if data_args.source_prefix is not None else ""
+    if prefix is not None:
+        special_tokens_dict = {'additional_special_tokens': [str(prefix)]}
+        tokenizer.add_special_tokens(special_tokens_dict)
+        logger.info("Prefix added as a special token: "+str(prefix))
+        logger.info("Tokenizer length: "+str(len(tokenizer)))
+    model.resize_token_embeddings(len(tokenizer))
 
     # Preprocessing the datasets.
     # We need to tokenize inputs and targets.
