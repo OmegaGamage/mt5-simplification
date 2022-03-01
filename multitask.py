@@ -359,11 +359,11 @@ def main():
 
     prefix = data_args.source_prefix if data_args.source_prefix is not None else ""
 
-    special_tokens_dict = {'additional_special_tokens': ["po-pt:", "en-si:"]}
+    special_tokens_dict = {'additional_special_tokens': ["po-pt:", "en-si:", "com-sim:"]}
     tokenizer.add_special_tokens(special_tokens_dict)
-    if prefix == "":
-        special_tokens_dict = {'additional_special_tokens': [str(prefix)]}
-        tokenizer.add_special_tokens(special_tokens_dict)
+    # if prefix == "":
+    #     special_tokens_dict = {'additional_special_tokens': [str(prefix)]}
+    #     tokenizer.add_special_tokens(special_tokens_dict)
     logger.info("Prefix added as a special token: " + str(prefix))
     logger.info("Tokenizer length: " + str(len(tokenizer)))
     model.resize_token_embeddings(len(tokenizer))
