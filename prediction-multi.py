@@ -42,7 +42,8 @@ if __name__ == '__main__':
     forced_bos_token_id = (
         tokenizer.lang_code_to_id[args.forced_bos_token] if args.forced_bos_token is not None else None
     )
-    model.config.forced_bos_token_id = forced_bos_token_id
+    if args.forced_bos_token is not None:
+        model.config.forced_bos_token_id = forced_bos_token_id
     model.to(device)
 
     logging.info("Model and Tokenizer loaded successfully. Starting predictions.")
