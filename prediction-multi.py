@@ -37,8 +37,8 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Load model and tokenizer from path
-    model = transformers.MT5ForConditionalGeneration.from_pretrained(args.model_path)
-    tokenizer = transformers.MT5Tokenizer.from_pretrained(args.model_path)
+    model = transformers.AutoModelForSeq2SeqLM.from_pretrained(args.model_path)
+    tokenizer = transformers.AutoTokenizer.from_pretrained(args.model_path)
     forced_bos_token_id = (
         tokenizer.lang_code_to_id[args.forced_bos_token] if args.forced_bos_token is not None else None
     )
