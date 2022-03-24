@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--rep_pen', type=float, help=f'Repetition penalty.')
     parser.add_argument('--num_beams', type=int, help="Number of beams. Default is 1")
     parser.add_argument('--do_sample', type=bool, help="Whether to use sampling. Default False")
+    parser.add_argument("--length_penalty", type=float, help=f'Length penalty', required=False)
 
     args = parser.parse_args()
 
@@ -76,6 +77,9 @@ if __name__ == '__main__':
     do_sample = args.do_sample if args.do_sample else False
     logging.info("Number of beams is set to %f." % do_sample)
 
+    length_penalty = args.length_penalty if args.length_penalty else False
+    logging.info("Length penalty set to %f" % length_penalty)
+
     i = 0
     for line in source_sentences[:count]:
         # Attach task prefix.
@@ -84,7 +88,8 @@ if __name__ == '__main__':
         input_ids = tokenizer(line, return_tensors="pt").input_ids
         input_ids = input_ids.to(device)
         output_ids = model.generate(input_ids=input_ids, do_sample=do_sample, temperature=temp, max_length=max_length,
-                                    top_k=topk, top_p=topp, repetition_penalty=rep_pen,num_beams=num_beams)
+                                    top_k=topk, top_p=topp, repetition_penalty=rep_pen, num_beams=num_beams,
+                                    length_penalty=length_penalty)
         out = tokenizer.decode(output_ids[0])
 
         # Remove pad and eos tokens.
