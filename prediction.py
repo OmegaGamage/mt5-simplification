@@ -22,6 +22,8 @@ if __name__ == '__main__':
     parser.add_argument('--num_beams', type=int, help="Number of beams. Default is 1")
     parser.add_argument('--do_sample', type=bool, help="Whether to use sampling. Default False")
     parser.add_argument("--length_penalty", type=float, help=f'Length penalty', required=False)
+    parser.add_argument("--num_return_sequences", type=float, help=f'Num of return sequences', required=False)
+
 
     args = parser.parse_args()
 
@@ -80,6 +82,9 @@ if __name__ == '__main__':
     length_penalty = args.length_penalty if args.length_penalty else False
     logging.info("Length penalty set to %f" % length_penalty)
 
+    num_return_sequences = args.num_return_sequences if args.num_return_sequences else False
+    logging.info("Num return sequences set to %f" % num_return_sequences)
+
     i = 0
     for line in source_sentences[:count]:
         # Attach task prefix.
@@ -89,7 +94,7 @@ if __name__ == '__main__':
         input_ids = input_ids.to(device)
         output_ids = model.generate(input_ids=input_ids, do_sample=do_sample, temperature=temp, max_length=max_length,
                                     top_k=topk, top_p=topp, repetition_penalty=rep_pen, num_beams=num_beams,
-                                    length_penalty=length_penalty)
+                                    length_penalty=length_penalty, num_return_sequences=num_return_sequences)
         out = tokenizer.decode(output_ids[0])
 
         # Remove pad and eos tokens.
