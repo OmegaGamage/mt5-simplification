@@ -22,7 +22,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_beams', type=int, help="Number of beams. Default is 1")
     parser.add_argument('--do_sample', type=bool, help="Whether to use sampling. Default False")
     parser.add_argument("--length_penalty", type=float, help=f'Length penalty', required=False)
-    parser.add_argument("--num_return_sequences", type=float, help=f'Num of return sequences', required=False)
+    parser.add_argument("--num_return_sequences", type=int, help=f'Num of return sequences', required=False)
 
 
     args = parser.parse_args()
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     length_penalty = args.length_penalty if args.length_penalty else False
     logging.info("Length penalty set to %f" % length_penalty)
 
-    num_return_sequences = args.num_return_sequences if args.num_return_sequences else False
+    num_return_sequences = args.num_return_sequences if args.num_return_sequences else 1
     logging.info("Num return sequences set to %f" % num_return_sequences)
 
     i = 0
