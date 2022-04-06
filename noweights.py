@@ -337,8 +337,9 @@ def main():
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
     )
-    model = transformers.MT5Model.from_config(
-        config=model_args.model_name_or_path
+    config = transformers.MT5Config()
+    model = transformers.MT5Model(
+        config
     )
 
     model.resize_token_embeddings(len(tokenizer))
