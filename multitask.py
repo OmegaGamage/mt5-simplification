@@ -359,7 +359,7 @@ def main():
 
     prefix = data_args.source_prefix if data_args.source_prefix is not None else ""
 
-    special_tokens_dict = {'additional_special_tokens': ["po-pt:", "en-si:", "come-sime:", "com-sim:"]}
+    special_tokens_dict = {'additional_special_tokens': ["en-si:", "en-ta:", "mwp-gen:"]}
     tokenizer.add_special_tokens(special_tokens_dict)
     # if prefix == "":
     #     special_tokens_dict = {'additional_special_tokens': [str(prefix)]}
