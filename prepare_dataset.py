@@ -161,9 +161,9 @@ def main():
                     })
 
 
-    create_json_file(train_combined_data, os.path.join(output_dataset_path,"train.json"))
-    create_json_file(val_combined_data, os.path.join(output_dataset_path,"validation.json"))
-    create_json_file(test_combined_data, os.path.join(output_dataset_path,"test.json"))
+    create_json_file(train_combined_data, "train.json")
+    create_json_file(val_combined_data, "validation.json")
+    create_json_file(test_combined_data, "test.json")
 
 
 if __name__ == "__main__":
