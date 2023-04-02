@@ -31,6 +31,9 @@ lang_dict = {
     "dv": "Dhivehi",
 }
 
+import os
+os.environ["WANDB_DISABLED"] = "True"
+
 class DATASET(Enum):
     TRAIN = 0
     VAL = 1
